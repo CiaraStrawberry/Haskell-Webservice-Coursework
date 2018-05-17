@@ -15,6 +15,7 @@ import           Database.SQLite.Simple
 
 import           WeatherService.Service
 
+
 {-| Entry point. Connects to the database and passes the connection to the
 routing function. -}
 main :: IO()
@@ -28,4 +29,11 @@ main = do
                                path $ \d -> dayHandler d conn
       , dirs "weather/date" $ do method PUT
                                  path $ \d -> path $ \t -> dayPutHandler d t conn
+      , dirs "weather/range" $ do method GET
+                                  path $ \e -> path $ \g -> checkPeriodDays e g conn
+      , dirs "weather/max" $ do method GET
+                                path $ \e -> path $ \g -> dayHandlerMaxTemp e g conn
+      , dirs "weather/above" $ do method GET
+                                  path $ \e -> dayHandlerAbove e conn
       ]
+
